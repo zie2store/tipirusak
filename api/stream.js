@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const streamUrl = 'https://nfsnew.newkso.ru/nfs/premium77/mono.m3u8';
+  const streamUrl = 'https://zekonew.newkso.ru/zeko/premium123/mono.m3u8';
 
   try {
     const response = await fetch(streamUrl, {

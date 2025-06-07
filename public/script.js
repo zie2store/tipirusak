@@ -58,10 +58,10 @@
             // Set description
             descEl.innerHTML = `
               <p class="description">
-                This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
-                It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
-                has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
-                <strong>${doc.Title}</strong> includes ${doc.Summary}.
+                This document is entitled <strong>${doc.Title}</strong> uploaded by Scribd Download Team.
+                It contains ${doc.Pages} pages in a PDF document type. This document with ID ${doc.ID}
+                has been downloaded for ${doc.Views} times. The information we can get from
+                ${doc.Title} includes ${doc.Summary}.
               </p>
               <a class="download-button" href="${downloadUrl}" target="_blank"> DOWNLOAD <span style="font-size: 20px;">⬇️</span></a>
             `;

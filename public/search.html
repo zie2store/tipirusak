@@ -2,34 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Search Results</title>
+  <title id="dynamic-title">Loading...</title>
   <meta name="description" content="Search Scribd documents by title or summary.">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
-    }
-    .result-item {
-      margin-bottom: 1.5em;
-    }
-    .result-item a {
-      font-weight: bold;
-      text-decoration: none;
-      color: #007bff;
-    }
-    .result-item div {
-      margin-left: 1.5em;
-      font-size: 0.95em;
-      color: #555;
-    }
-    mark {
-      background-color: yellow;
-      color: black;
-    }
-  </style>
+ <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
   <form id="searchForm" style="display: flex; max-width: 400px; margin: 20px auto;">
@@ -72,6 +48,9 @@
 
     const baseUrl = window.location.origin;
     const queryParam = getQueryParam('query');
+    if (queryParam) {
+      document.title = `All documents related to ${queryParam.replace(/-/g, ' ')}`;
+        }
     const queryWords = queryParam ? queryParam.toLowerCase().split('-').filter(Boolean) : [];
 
     const headerEl = document.getElementById('header');
@@ -155,5 +134,6 @@
       }
     });
   </script>
+  <script src="/script.js"></script>
 </body>
 </html>

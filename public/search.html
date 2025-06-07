@@ -25,11 +25,15 @@
       font-size: 0.95em;
       color: #555;
     }
+    mark {
+      background-color: yellow;
+      color: black;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Search Results</h1>
+  <h1 id="header">Search Results</h1>
   <div id="results">Searching...</div>
 
   <script>
@@ -45,8 +49,27 @@
       return urlParams.get(name);
     }
 
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlight(text, words) {
+      let escapedWords = words.map(w => escapeRegExp(w));
+      const pattern = new RegExp(`(${escapedWords.join('|')})`, 'gi');
+      return text.replace(pattern, '<mark>$1</mark>');
+    }
+
     const queryParam = getQueryParam('query');
-    const queryWords = queryParam ? queryParam.toLowerCase().split('-') : [];
+    const queryWords = queryParam ? queryParam.toLowerCase().split('-').filter(Boolean) : [];
+
+    const headerEl = document.getElementById('header');
+    const container = document.getElementById('results');
+
+    if (!queryParam || queryWords.length === 0) {
+      headerEl.textContent = "Please enter a search query.";
+      container.innerHTML = "";
+      throw new Error('No query provided');
+    }
 
     fetch('https://raw.githubusercontent.com/zie2store/tipirusak/main/public/scrbd.csv')
       .then(response => response.text())
@@ -65,34 +88,56 @@
               );
             });
 
-            const container = document.getElementById('results');
+            if (matches.length > 0) {
+              headerEl.textContent = `${matches.length} document${matches.length !== 1 ? 's' : ''} found for '${queryParam.replace(/-/g, ' ')}'.`;
 
-            if (matches.length === 0) {
-              container.innerHTML = '<p>No documents found matching your search.</p>';
-              return;
-            }
+              const output = matches.map(d => {
+                const slug = slugify(d.Title);
+                const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
 
-            const output = matches.map(d => {
-              const slug = slugify(d.Title);
-              const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
-              return `
-                <div class="result-item">
-                  <a href="${url}">📄 ${d.Title}</a>
-                  <div>${d.Summary}</div>
-                </div>
+                // Highlight matched words in Title & Summary
+                const highlightedTitle = highlight(d.Title, queryWords);
+                const highlightedSummary = highlight(d.Summary, queryWords);
+
+                return `
+                  <div class="result-item">
+                    <a href="${url}">📄 ${highlightedTitle}</a>
+                    <div>${highlightedSummary}</div>
+                  </div>
+                `;
+              }).join('');
+
+              container.innerHTML = output;
+            } else {
+              headerEl.textContent = `No documents found for '${queryParam.replace(/-/g, ' ')}'.`;
+
+              // Show 10 random suggestions (like your suggestions block)
+              const shuffled = data.sort(() => 0.5 - Math.random()).slice(0, 10);
+
+              const suggestions = shuffled.map(d => {
+                const slug = slugify(d.Title);
+                const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+                return `
+                  <div class="result-item">
+                    <a href="${url}">📄 ${d.Title}</a>
+                    <div>${d.Summary}</div>
+                  </div>
+                `;
+              }).join('');
+
+              container.innerHTML = `
+                <h2>📚 You might also like:</h2>
+                ${suggestions}
               `;
-            }).join('');
-
-            container.innerHTML = output;
+            }
           }
         });
       })
       .catch(err => {
         console.error('Error loading search results:', err);
-        document.getElementById('results').innerHTML = '<p>Error loading search results.</p>';
+        container.innerHTML = '<p>Error loading search results.</p>';
       });
   </script>
 
 </body>
 </html>
-

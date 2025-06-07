@@ -1,16 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MotoGP Live</title>
-  <link href="https://vjs.zencdn.net/8.9.0/video-js.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>Document Viewer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <h1>MotoGP Live Stream</h1>
- <iframe src="https://tipirusak.vercel.app/api/proxy.js" width="640" height="360" frameborder="0"></iframe>
+  <div id="documents"></div>
 
+  <script>
+    // Convert title to URL-friendly slug
+    function slugify(title) {
+      return title.trim().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
+    }
 
-  <script src="https://vjs.zencdn.net/8.9.0/video.min.js"></script>
-                 
+    // Load CSV from GitHub and render data
+    fetch('https://github.com/zie2store/tipirusak/raw/refs/heads/main/public/scrbd.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            const data = results.data;
+            const container = document.getElementById('documents');
+
+            data.forEach(doc => {
+              const url = `https://tipirusak.vercel.app?document=${doc.ID}/${slugify(doc.Title)}`;
+
+              const html = `
+                <h1>${doc.Title}</h1>
+                <p>
+                  This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
+                  It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
+                  has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
+                  <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
+                </p>
+                <p><a href="${url}">${url}</a></p>
+                <hr/>
+              `;
+
+              container.insertAdjacentHTML('beforeend', html);
+            });
+          }
+        });
+      })
+      .catch(err => {
+        console.error('Failed to load CSV:', err);
+        document.getElementById('documents').innerHTML = `<p>Error loading documents.</p>`;
+      });
+  </script>
+</body>
 </html>

@@ -1,3 +1,7 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .download-button {
       display: inline-block;
       margin-bottom: 20px;

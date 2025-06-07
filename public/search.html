@@ -126,7 +126,7 @@
 
               const suggestions = shuffled.map(d => {
                 const slug = slugify(d.Title);
-                const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+                const url = `https://tipirusak.vercel.app/viewer.html?document=${d.ID}#${slug}`;
                 return `
                   <div class="result-item">
                     <a href="${url}">📄 ${d.Title}</a>

@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Search Results</title>
+  <meta name="description" content="Search Scribd documents by title or summary.">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .result-item {
+      margin-bottom: 1.5em;
+    }
+    .result-item a {
+      font-weight: bold;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .result-item div {
+      margin-left: 1.5em;
+      font-size: 0.95em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Search Results</h1>
+  <div id="results">Searching...</div>
+
+  <script>
+    function slugify(title) {
+      return title.trim()
+                  .toLowerCase()
+                  .replace(/\s+/g, '-')
+                  .replace(/[^\w\-]/g, '');
+    }
+
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    const queryParam = getQueryParam('query');
+    const queryWords = queryParam ? queryParam.toLowerCase().split('-') : [];
+
+    fetch('https://raw.githubusercontent.com/zie2store/tipirusak/main/public/scrbd.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            const data = results.data;
+
+            const matches = data.filter(d => {
+              const title = d.Title.toLowerCase();
+              const summary = d.Summary.toLowerCase();
+              return queryWords.some(q =>
+                title.includes(q) || summary.includes(q)
+              );
+            });
+
+            const container = document.getElementById('results');
+
+            if (matches.length === 0) {
+              container.innerHTML = '<p>No documents found matching your search.</p>';
+              return;
+            }
+
+            const output = matches.map(d => {
+              const slug = slugify(d.Title);
+              const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+              return `
+                <div class="result-item">
+                  <a href="${url}">📄 ${d.Title}</a>
+                  <div>${d.Summary}</div>
+                </div>
+              `;
+            }).join('');
+
+            container.innerHTML = output;
+          }
+        });
+      })
+      .catch(err => {
+        console.error('Error loading search results:', err);
+        document.getElementById('results').innerHTML = '<p>Error loading search results.</p>';
+      });
+  </script>
+
+</body>
+</html>
 

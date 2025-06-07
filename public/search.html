@@ -107,9 +107,12 @@
                 const highlightedTitle = highlight(d.Title, queryWords);
                 const highlightedSummary = highlight(d.Summary, queryWords);
                 return `
-                  <div class="result-item">
-                    <a href="${url}">📄 ${highlightedTitle}</a>
-                    <div>${highlightedSummary}</div>
+                  <div class="related-post">
+                  <div class="related-post-title">
+                    <a href="${url}">${highlightedTitle}</a></div>
+                    <div class="related-post-text">${highlightedSummary}
+                    <hr class="post-divider">
+                    </div>
                   </div>
                 `;
               }).join('');
@@ -124,15 +127,21 @@
                 const slug = slugify(d.Title);
                 const url = `${baseUrl}/viewer.html?document=${d.ID}#${slug}`;
                 return `
-                  <div class="result-item">
-                    <a href="${url}">📄 ${d.Title}</a>
-                    <div>${d.Summary}</div>
+                  <div class="related-post">
+                <div class="related-post-title">
+                  <a href="${url}">
+                    ${d.Title}
+                  </a></div>
+                  <div class="related-post-text">
+                    ${d.Summary}
+                    <hr class="post-divider">
                   </div>
-                `;
-              }).join('');
+               </div>
+              `;
+            }).join('');
 
-              container.innerHTML = `
-                <h2>These are the documents might be interesting for you:</h2>
+            suggEl.innerHTML = `
+            <h2>Documents might be interesting for you:</h2>
                 ${suggestions}
               `;
             }

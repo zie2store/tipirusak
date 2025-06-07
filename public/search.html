@@ -103,7 +103,7 @@
 
               const output = matches.map(d => {
                 const slug = slugify(d.Title);
-                const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+                const url = `https://tipirusak.vercel.app/viewer.html?document=${d.ID}#${slug}`;
 
                 // Highlight matched words in Title & Summary
                 const highlightedTitle = highlight(d.Title, queryWords);

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Document Viewer</title>
+  <title>Loading document...</title> <!-- Default fallback title -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
@@ -48,6 +48,9 @@
               container.innerHTML = `<p>Document not found for ID: ${documentId} and title: ${titleSlug}</p>`;
               return;
             }
+
+            // ✅ Set the browser tab title
+            document.title = doc.Title;
 
             const iframe = `
               <iframe class="scribd_iframe_embed"

@@ -104,7 +104,7 @@
             }).join('');
 
             suggEl.innerHTML = `
-            <h2>These documents might be related to ${doc.Title}</h2>
+            <h2>Documents related to ${doc.Title}</h2>
           
               ${suggestions}
             `;

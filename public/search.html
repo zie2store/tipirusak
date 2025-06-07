@@ -32,17 +32,18 @@
   </style>
 </head>
 <body>
-   <form id="searchForm" style="display: flex; max-width: 400px; margin: 20px auto;">
-  <input
-    type="text"
-    name="query"
-    id="searchInput"
-    placeholder="Search documents..."
-    style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-right: none; border-radius: 5px 0 0 5px;" />
-  <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 0 5px 5px 0;">
-    🔍
-  </button>
-</form>
+  <form id="searchForm" style="display: flex; max-width: 400px; margin: 20px auto;">
+    <input
+      type="text"
+      name="query"
+      id="searchInput"
+      placeholder="Search documents..."
+      style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-right: none; border-radius: 5px 0 0 5px;" />
+    <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 0 5px 5px 0;">
+      🔍
+    </button>
+  </form>
+
   <h1 id="header">Search Results</h1>
   <div id="results">Searching...</div>
 
@@ -69,6 +70,7 @@
       return text.replace(pattern, '<mark>$1</mark>');
     }
 
+    const baseUrl = window.location.origin;
     const queryParam = getQueryParam('query');
     const queryWords = queryParam ? queryParam.toLowerCase().split('-').filter(Boolean) : [];
 
@@ -103,12 +105,9 @@
 
               const output = matches.map(d => {
                 const slug = slugify(d.Title);
-                const url = `https://tipirusak.vercel.app/viewer.html?document=${d.ID}#${slug}`;
-
-                // Highlight matched words in Title & Summary
+                const url = `${baseUrl}/viewer.html?document=${d.ID}#${slug}`;
                 const highlightedTitle = highlight(d.Title, queryWords);
                 const highlightedSummary = highlight(d.Summary, queryWords);
-
                 return `
                   <div class="result-item">
                     <a href="${url}">📄 ${highlightedTitle}</a>
@@ -121,12 +120,11 @@
             } else {
               headerEl.textContent = `No documents found for '${queryParam.replace(/-/g, ' ')}'.`;
 
-              // Show 10 random suggestions (like your suggestions block)
               const shuffled = data.sort(() => 0.5 - Math.random()).slice(0, 10);
 
               const suggestions = shuffled.map(d => {
                 const slug = slugify(d.Title);
-                const url = `https://tipirusak.vercel.app/viewer.html?document=${d.ID}#${slug}`;
+                const url = `${baseUrl}/viewer.html?document=${d.ID}#${slug}`;
                 return `
                   <div class="result-item">
                     <a href="${url}">📄 ${d.Title}</a>
@@ -148,15 +146,14 @@
         container.innerHTML = '<p>Error loading search results.</p>';
       });
 
-     document.getElementById('searchForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const input = document.getElementById('searchInput').value.trim();
-    if (input) {
-      const query = input.toLowerCase().replace(/\s+/g, '-');
-      window.location.href = `https://tipirusak.vercel.app/search.html?query=${query}`;
-    }
-  });
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = document.getElementById('searchInput').value.trim();
+      if (input) {
+        const query = input.toLowerCase().replace(/\s+/g, '-');
+        window.location.href = `${baseUrl}/search.html?query=${query}`;
+      }
+    });
   </script>
-
 </body>
 </html>

@@ -6,20 +6,26 @@
   <meta name="description" content="Search Scribd documents by title or summary.">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
  <link rel="stylesheet" href="/style.css" />
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <form id="searchForm" style="display: flex; max-width: 400px; margin: 20px auto;">
-    <input
-      type="text"
-      name="query"
-      id="searchInput"
-      placeholder="Search documents..."
-      style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-right: none; border-radius: 5px 0 0 5px;" />
-    <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 0 5px 5px 0;">
-      🔍
-    </button>
-  </form>
-
+  
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">[scrbd]</div>
+      <form id="searchForm" class="search-form">
+        <input
+          type="text"
+          name="query"
+          id="searchInput"
+          class="search-input"
+          placeholder="type document you want to find..." />
+        <button type="submit">search</button>
+      </form>
+    </div>
+  </header>
+  
   <h1 id="header">Search Results</h1>
   <div id="results">Searching...</div>
 

@@ -1,8 +1,10 @@
 /* Global Styles */
-body {
+html, body {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
   background-color: #f1f5f9;
   color: #333;
 }
@@ -64,10 +66,12 @@ header .container {
 
 /* Main Content */
 main {
-  padding: 120px 40px 40px;
+  flex: 1;
+  padding: 140px 40px 40px;
   max-width: 960px;
   margin: 0 auto;
   background-color: white;
+  width: 100%;
 }
 
 h1 {

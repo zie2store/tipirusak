@@ -81,6 +81,12 @@ h1 {
   margin-bottom: 20px;
   color: #444;
 }
+.footerdesc {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: #444;
+}
 
 .download-button {
   background-color: #f44336;

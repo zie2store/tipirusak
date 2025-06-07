@@ -6,10 +6,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <div id="documents"></div>
+  <div id="document-container"></div>
 
   <script>
-    // Slugify function: lowercase + dash-separated + clean chars
+    // Slugify function
     function slugify(title) {
       return title.trim()
                   .toLowerCase()
@@ -17,7 +17,24 @@
                   .replace(/[^\w\-]/g, '');
     }
 
-    // Fetch and parse CSV from raw.githubusercontent.com
+    // Get URL query param by name
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // Main
+    const documentId = getQueryParam('document');
+    const titleSlug = window.location.hash.slice(1); // remove the '#'
+
+    const container = document.getElementById('document-container');
+
+    if (!documentId || !titleSlug) {
+      container.innerHTML = `<p>Error: Missing document ID or title in URL.</p>`;
+      throw new Error('Missing document ID or title');
+    }
+
+    // Fetch CSV and find matching document
     fetch('https://raw.githubusercontent.com/zie2store/tipirusak/main/public/scrbd.csv')
       .then(response => response.text())
       .then(csvText => {
@@ -26,32 +43,33 @@
           skipEmptyLines: true,
           complete: function(results) {
             const data = results.data;
-            const container = document.getElementById('documents');
 
-            data.forEach(doc => {
-              // Build URL with query param "document" and slug in hash (#)
-              const url = `https://tipirusak.vercel.app/?document=${doc.ID}#${slugify(doc.Title)}`;
+            // Find matching document by ID and slugified Title
+            const doc = data.find(d =>
+              d.ID === documentId && slugify(d.Title) === titleSlug
+            );
 
-              const html = `
-                <h1>${doc.Title}</h1>
-                <p>
-                  This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
-                  It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
-                  has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
-                  <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
-                </p>
-                <p><a href="${url}">${url}</a></p>
-                <hr/>
-              `;
+            if (!doc) {
+              container.innerHTML = `<p>Document not found for ID: ${documentId} and title: ${titleSlug}</p>`;
+              return;
+            }
 
-              container.insertAdjacentHTML('beforeend', html);
-            });
+            // Show document info
+            container.innerHTML = `
+              <h1>${doc.Title}</h1>
+              <p>
+                This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
+                It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
+                has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
+                <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
+              </p>
+            `;
           }
         });
       })
       .catch(err => {
         console.error('Failed to load CSV:', err);
-        document.getElementById('documents').innerHTML = `<p>Error loading documents.</p>`;
+        container.innerHTML = `<p>Error loading document data.</p>`;
       });
   </script>
 </body>

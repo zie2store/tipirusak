@@ -93,7 +93,7 @@
                 <div class="related-post">
                 <div class="related-post-title">
                   <a href="${url}">
-                    📄 ${d.Title}
+                    ${d.Title}
                   </a></div>
                   <div class="related-post-text">
                     ${d.Summary}

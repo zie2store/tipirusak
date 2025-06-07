@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Document Viewer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
@@ -9,12 +9,15 @@
   <div id="documents"></div>
 
   <script>
-    // Slugify title for URL use
+    // Slugify function: lowercase + dash-separated + clean chars
     function slugify(title) {
-      return title.trim().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
+      return title.trim()
+                  .toLowerCase()
+                  .replace(/\s+/g, '-')
+                  .replace(/[^\w\-]/g, '');
     }
 
-    // Load and render the CSV
+    // Fetch and parse CSV from raw.githubusercontent.com
     fetch('https://raw.githubusercontent.com/zie2store/tipirusak/main/public/scrbd.csv')
       .then(response => response.text())
       .then(csvText => {
@@ -26,7 +29,8 @@
             const container = document.getElementById('documents');
 
             data.forEach(doc => {
-              const url = `https://tipirusak.vercel.app?document=${doc.ID}&title=${slugify(doc.Title)}`;
+              // Build URL with query param "document" and slug in hash (#)
+              const url = `https://tipirusak.vercel.app/?document=${doc.ID}#${slugify(doc.Title)}`;
 
               const html = `
                 <h1>${doc.Title}</h1>

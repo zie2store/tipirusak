@@ -93,6 +93,31 @@
             `;
 
             container.innerHTML = html;
+
+            // ➕ Add 10 random suggestions
+            const otherDocs = data.filter(d => d.ID.trim() !== doc.ID.trim());
+            const shuffled = otherDocs.sort(() => 0.5 - Math.random()).slice(0, 10);
+
+            const suggestions = shuffled.map(d => {
+              const slug = slugify(d.Title);
+              const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+              return `
+                <div style="margin-bottom: 1em;">
+                  <a href="${url}" style="font-weight: bold; text-decoration: none; color: #007bff;">
+                    📄 ${d.Title}
+                  </a>
+                  <div style="margin-left: 1.5em; font-size: 0.95em; color: #555;">
+                    ${d.Summary}
+                  </div>
+                </div>
+              `;
+            }).join('');
+
+            container.innerHTML += `
+              <hr/>
+              <h2>📚 You might also like:</h2>
+              ${suggestions}
+            `;
           }
         });
       })

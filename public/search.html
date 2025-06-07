@@ -32,7 +32,17 @@
   </style>
 </head>
 <body>
-
+   <form id="searchForm" style="display: flex; max-width: 400px; margin: 20px auto;">
+  <input
+    type="text"
+    name="query"
+    id="searchInput"
+    placeholder="Search documents..."
+    style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-right: none; border-radius: 5px 0 0 5px;" />
+  <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 0 5px 5px 0;">
+    🔍
+  </button>
+</form>
   <h1 id="header">Search Results</h1>
   <div id="results">Searching...</div>
 

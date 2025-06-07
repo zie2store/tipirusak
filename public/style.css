@@ -40,7 +40,7 @@ header .container {
   background-color: white;
   border-radius: 30px;
   overflow: hidden;
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
 }
 
@@ -57,14 +57,14 @@ header .container {
   border: none;
   padding: 10px 20px;
   font-size: 20px;
-  color: #f7a564;
+  color: #fffbf0;
   cursor: pointer;
   border-left: 1px solid #eee;
 }
 
 /* Main Content */
 main {
-  padding: 140px 20px 40px;
+  padding: 60px 20px 40px;
   max-width: 960px;
   margin: 0 auto;
   background-color: white;
@@ -155,7 +155,7 @@ footer nav a {
   }
 
   main {
-    padding: 120px 15px 30px;
+    padding: 60px 15px 30px;
   }
 
   .search-form {

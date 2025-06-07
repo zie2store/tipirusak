@@ -7,7 +7,7 @@
 </head>
 <body>
   <div id="document-container"></div>
-  <div id="viewer"></div>
+
   <script>
     function slugify(title) {
       return title.trim()
@@ -67,23 +67,7 @@
         container.innerHTML = `<p>Error loading document data.</p>`;
       });
 
-    // Create iframe
-    const iframe = document.createElement("iframe");
-    iframe.className = "scribd_iframe_embed";
-    iframe.src = `https://www.scribd.com/embeds/${doc.ID}/content?start_page=1&view_mode=scroll`;
-    iframe.setAttribute("tabindex", "0");
-    iframe.setAttribute("data-auto-height", "true");
-    iframe.setAttribute("data-aspect-ratio", "0.7080062794348508");
-    iframe.setAttribute("scrolling", "no");
-    iframe.setAttribute("width", "100%");
-    iframe.setAttribute("height", "1000px");
-    iframe.setAttribute("frameborder", "0");
 
-    // Append iframe
-    document.getElementById("viewer").appendChild(iframe);
-  } else {
-    document.getElementById("content").innerHTML = "<p style='color:red;'>Missing 'doc' or title parameter in the URL. Click <a href='https://scrbd.vercel.app'>HERE</a> to find SCRIBD Document!</p>";
-  }
   </script>
  
 </body>

@@ -99,7 +99,7 @@
             });
 
             if (matches.length > 0) {
-              headerEl.textContent = `${matches.length} document${matches.length !== 1 ? 's' : ''} found for '${queryParam.replace(/-/g, ' ')}'.`;
+              headerEl.textContent = `${matches.length} document${matches.length !== 1 ? 's' : ''} found for '${queryParam.replace(/-/g, ' ')}'. But, these documents might be interesting for you.`;
 
               const output = matches.map(d => {
                 const slug = slugify(d.Title);
@@ -138,7 +138,7 @@
             }).join('');
 
             container.innerHTML = `
-            <h2>Documents might be interesting for you</h2>
+          
                 ${suggestions}
               `;
             }

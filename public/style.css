@@ -101,9 +101,8 @@ h1 {
 /* Iframe Section */
 #iframe-section iframe {
   width: 100%;
-  height: 600px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  height: 800px;
+  
 }
 
 /* Suggestions */
@@ -133,8 +132,8 @@ footer {
   justify-content: center;
   flex-wrap: wrap;
   padding: 30px 20px;
-  background-color: #fff;
-  font-size: 12px;
+  background-color: #fffbf0;
+  font-size: 14px;
   color: #888;
   gap: 15px;
   text-align: center;

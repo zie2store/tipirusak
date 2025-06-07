@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Loading document...</title>
+  <meta name="description" content="">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     .download-button {
@@ -22,17 +23,22 @@
 </head>
 <body>
   <form id="searchForm" style="display: flex; max-width: 400px; margin: 20px auto;">
-  <input
-    type="text"
-    name="query"
-    id="searchInput"
-    placeholder="Search documents..."
-    style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-right: none; border-radius: 5px 0 0 5px;" />
-  <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 0 5px 5px 0;">
-    🔍
-  </button>
-</form>
-  <div id="document-container"></div>
+    <input
+      type="text"
+      name="query"
+      id="searchInput"
+      placeholder="Search documents..."
+      style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-right: none; border-radius: 5px 0 0 5px;" />
+    <button type="submit" style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 0 5px 5px 0;">
+      🔍
+    </button>
+  </form>
+
+  <!-- Split content containers -->
+  <div id="title-section"></div>
+  <div id="description-section"></div>
+  <div id="iframe-section"></div>
+  <div id="suggestion-section"></div>
 
   <script>
     function slugify(title) {
@@ -49,10 +55,14 @@
 
     const documentId = getQueryParam('document');
     const titleSlug = window.location.hash.slice(1);
-    const container = document.getElementById('document-container');
+
+    const titleEl = document.getElementById('title-section');
+    const descEl = document.getElementById('description-section');
+    const iframeEl = document.getElementById('iframe-section');
+    const suggEl = document.getElementById('suggestion-section');
 
     if (!documentId || !titleSlug) {
-      container.innerHTML = `<p>Error: Missing document ID or title in URL.</p>`;
+      titleEl.innerHTML = `<p>Error: Missing document ID or title in URL.</p>`;
       throw new Error('Missing document ID or title');
     }
 
@@ -71,25 +81,36 @@
             );
 
             if (!doc) {
-              container.innerHTML = `<p>Document not found for ID: ${documentId} and title: ${titleSlug}</p>`;
+              titleEl.innerHTML = `<p>Document not found for ID: ${documentId} and title: ${titleSlug}</p>`;
               return;
             }
 
             document.title = doc.Title;
 
             const downloadUrl = `https://ilide.info/docgeneratev2?fileurl=https://scribd.vdownloaders.com/pdownload/${doc.ID}/`;
+            
+            //Set meta description
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+              metaDescription.setAttribute('content', doc.Summary.slice(0,160));
+            }
+            
+            // Set title
+            titleEl.innerHTML = `<h1>${doc.Title}</h1>`;
 
-            const html = `
-              <h1>${doc.Title}</h1>
+            // Set description
+            descEl.innerHTML = `
               <p>
                 This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
                 It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
                 has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
-                <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
+                <strong>${doc.Title}</strong> includes ${doc.Summary}.
               </p>
-
               <a class="download-button" href="${downloadUrl}" target="_blank">⬇ Download Document</a>
+            `;
 
+            // Set iframe
+            iframeEl.innerHTML = `
               <iframe class="scribd_iframe_embed"
                 title="${doc.Title}"
                 src="https://www.scribd.com/embeds/${doc.ID}/content?start_page=1&view_mode=scroll&access_key=key-NCzuA9v6DY7zHHNCjjID"
@@ -103,15 +124,14 @@
               </iframe>
             `;
 
-            container.innerHTML = html;
-
-            // ➕ Add 10 random suggestions
+            // Set suggestions
             const otherDocs = data.filter(d => d.ID.trim() !== doc.ID.trim());
             const shuffled = otherDocs.sort(() => 0.5 - Math.random()).slice(0, 10);
 
             const suggestions = shuffled.map(d => {
               const slug = slugify(d.Title);
-              const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+              const baseUrl = window.location.origin;
+              const url = `${baseUrl}/viewer.html?document=${d.ID}#${slug}`;
               return `
                 <div style="margin-bottom: 1em;">
                   <a href="${url}" style="font-weight: bold; text-decoration: none; color: #007bff;">
@@ -124,7 +144,7 @@
               `;
             }).join('');
 
-            container.innerHTML += `
+            suggEl.innerHTML = `
               <hr/>
               <h2>📚 You might also like:</h2>
               ${suggestions}
@@ -134,17 +154,18 @@
       })
       .catch(err => {
         console.error('Failed to load CSV:', err);
-        container.innerHTML = `<p>Error loading document data.</p>`;
+        titleEl.innerHTML = `<p>Error loading document data.</p>`;
       });
 
     document.getElementById('searchForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const input = document.getElementById('searchInput').value.trim();
-    if (input) {
-      const query = input.toLowerCase().replace(/\s+/g, '-');
-      window.location.href = `https://tipirusak.vercel.app/search.html?query=${query}`;
-    }
-  });
+      e.preventDefault();
+      const input = document.getElementById('searchInput').value.trim();
+      if (input) {
+        const query = input.toLowerCase().replace(/\s+/g, '-');
+        const baseUrl = window.location.origin;
+        window.location.href = `${baseUrl}/search.html?query=${query}`;
+      }
+    });
   </script>
 </body>
 </html>

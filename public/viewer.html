@@ -85,7 +85,7 @@
                 This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
                 It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
                 has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
-                <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
+                <strong>${doc.Title}</strong> includes ${doc.Summary}.
               </p>
 
               <a class="download-button" href="${downloadUrl}" target="_blank">⬇ Download Document</a>
@@ -111,7 +111,7 @@
 
             const suggestions = shuffled.map(d => {
               const slug = slugify(d.Title);
-              const url = `https://tipirusak.vercel.app/?document=${d.ID}#${slug}`;
+              const url = `https://tipirusak.vercel.app/viewer.html?document=${d.ID}#${slug}`;
               return `
                 <div style="margin-bottom: 1em;">
                   <a href="${url}" style="font-weight: bold; text-decoration: none; color: #007bff;">

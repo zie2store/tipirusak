@@ -54,7 +54,7 @@
             
             // Set title
             titleEl.innerHTML = `<h1>${doc.Title}</h1>`;
-            <hr class="post-divider">
+            
             // Set description
             descEl.innerHTML = `
               <p class="description">
@@ -105,7 +105,7 @@
 
             suggEl.innerHTML = `
             <h2>These documents might be related to ${doc.Title}</h2>
-            <hr class="post-divider">
+          
               ${suggestions}
             `;
           }

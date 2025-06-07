@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Loading document...</title> <!-- Default fallback title -->
+  <title>Loading document...</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    .download-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .download-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
   <div id="document-container"></div>
@@ -49,10 +64,21 @@
               return;
             }
 
-            // ✅ Set the browser tab title
             document.title = doc.Title;
 
-            const iframe = `
+            const downloadUrl = `https://ilide.info/docgeneratev2?fileurl=https://scribd.vdownloaders.com/pdownload/${doc.ID}/`;
+
+            const html = `
+              <h1>${doc.Title}</h1>
+              <p>
+                This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
+                It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
+                has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
+                <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
+              </p>
+
+              <a class="download-button" href="${downloadUrl}" target="_blank">⬇ Download Document</a>
+
               <iframe class="scribd_iframe_embed"
                 title="${doc.Title}"
                 src="https://www.scribd.com/embeds/${doc.ID}/content?start_page=1&view_mode=scroll&access_key=key-NCzuA9v6DY7zHHNCjjID"
@@ -66,16 +92,7 @@
               </iframe>
             `;
 
-            container.innerHTML = `
-              <h1>${doc.Title}</h1>
-              <p>
-                This document is entitled <strong>${doc.Title}</strong> and is uploaded by Scribd Download Team.
-                It contains <strong>${doc.Pages}</strong> pages. This document with ID <strong>${doc.ID}</strong>
-                has been downloaded <strong>${doc.Views}</strong> times. The information we can get from
-                <strong>${doc.Title}</strong> includes <em>${doc.Summary}</em>.
-              </p>
-              ${iframe}
-            `;
+            container.innerHTML = html;
           }
         });
       })

@@ -125,6 +125,13 @@ h2 {
   line-height: 1.6;
 }
 
+.post-divider {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+
 /* Footer */
 footer {
   display: flex;

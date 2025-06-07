@@ -15,7 +15,7 @@
     }
 
     // Load and render the CSV
-    fetch('https://github.com/zie2store/tipirusak/raw/refs/heads/main/public/scrbd.csv')
+    fetch('https://raw.githubusercontent.com/zie2store/tipirusak/main/public/scrbd.csv')
       .then(response => response.text())
       .then(csvText => {
         Papa.parse(csvText, {

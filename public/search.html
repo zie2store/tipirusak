@@ -129,11 +129,8 @@
                 return `
                 <div class="related-post">
                 <div class="related-post-title">
-                  <a href="${url}">
-                    ${d.Title}
-                  </a></div>
-                  <div class="related-post-text">
-                    ${d.Summary}
+                  <a href="${url}">${d.Title}</a></div>
+                  <div class="related-post-text">${d.Summary}
                     <hr class="post-divider">
                   </div>
                </div>
@@ -141,7 +138,7 @@
             }).join('');
 
             suggEl.innerHTML = `
-            <h2>Documents might be interesting for you:</h2>
+            <h2>Documents might be interesting for you</h2>
                 ${suggestions}
               `;
             }

@@ -15,3 +15,21 @@ body {
     .download-button:hover {
       background-color: #0056b3;
     }
+
+.result-item {
+      margin-bottom: 1.5em;
+    }
+    .result-item a {
+      font-weight: bold;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .result-item div {
+      margin-left: 1.5em;
+      font-size: 0.95em;
+      color: #555;
+    }
+    mark {
+      background-color: yellow;
+      color: black;
+    }

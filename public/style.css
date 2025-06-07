@@ -68,7 +68,6 @@ main {
   max-width: 960px;
   margin: 0 auto;
   background-color: white;
-  border-radius: 10px;
 }
 
 h1 {
@@ -153,16 +152,6 @@ footer nav a {
     gap: 10px;
     align-items: flex-start;
   }
-
-  main {
-    padding: 100px 15px 30px;
-  }
-
-  .search-form {
-    width: 100%;
-  }
-}
-
 
 .result-item {
       margin-bottom: 1.5em;

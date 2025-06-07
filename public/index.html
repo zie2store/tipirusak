@@ -9,12 +9,12 @@
   <div id="documents"></div>
 
   <script>
-    // Convert title to URL-friendly slug
+    // Slugify title for URL use
     function slugify(title) {
       return title.trim().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
     }
 
-    // Load CSV from GitHub and render data
+    // Load and render the CSV
     fetch('https://github.com/zie2store/tipirusak/raw/refs/heads/main/public/scrbd.csv')
       .then(response => response.text())
       .then(csvText => {
@@ -26,7 +26,7 @@
             const container = document.getElementById('documents');
 
             data.forEach(doc => {
-              const url = `https://tipirusak.vercel.app?document=${doc.ID}/${slugify(doc.Title)}`;
+              const url = `https://tipirusak.vercel.app?document=${doc.ID}&title=${slugify(doc.Title)}`;
 
               const html = `
                 <h1>${doc.Title}</h1>

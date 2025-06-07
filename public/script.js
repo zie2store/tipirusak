@@ -76,7 +76,7 @@
                 data-aspect-ratio="0.6536"
                 scrolling="no"
                 width="100%"
-                height="600"
+                height="800"
                 frameborder="0">
               </iframe>
             `;
@@ -90,14 +90,15 @@
               const baseUrl = window.location.origin;
               const url = `${baseUrl}/viewer.html?document=${d.ID}#${slug}`;
               return `
-                <div style="margin-bottom: 1em;">
-                  <a href="${url}" style="font-weight: bold; text-decoration: none; color: #007bff;">
+                <div class="related-post">
+                <div class="related-post-title">
+                  <a href="${url}">
                     📄 ${d.Title}
-                  </a>
-                  <div style="margin-left: 1.5em; font-size: 0.95em; color: #555;">
+                  </a></div>
+                  <div class="related-post-text">
                     ${d.Summary}
                   </div>
-                </div>
+               </div>
               `;
             }).join('');
 

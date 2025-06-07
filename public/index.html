@@ -9,7 +9,6 @@
   <div id="document-container"></div>
 
   <script>
-    // Slugify function
     function slugify(title) {
       return title.trim()
                   .toLowerCase()
@@ -17,15 +16,13 @@
                   .replace(/[^\w\-]/g, '');
     }
 
-    // Get URL query param by name
     function getQueryParam(name) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(name);
     }
 
-    // Main
     const documentId = getQueryParam('document');
-    const titleSlug = window.location.hash.slice(1); // remove the '#'
+    const titleSlug = window.location.hash.slice(1);
 
     const container = document.getElementById('document-container');
 
@@ -34,7 +31,6 @@
       throw new Error('Missing document ID or title');
     }
 
-    // Fetch CSV and find matching document
     fetch('https://raw.githubusercontent.com/zie2store/tipirusak/main/public/scrbd.csv')
       .then(response => response.text())
       .then(csvText => {
@@ -44,9 +40,9 @@
           complete: function(results) {
             const data = results.data;
 
-            // Find matching document by ID and slugified Title
             const doc = data.find(d =>
-              d.ID === documentId && slugify(d.Title) === titleSlug
+              d.ID.trim() === documentId.trim() &&
+              slugify(d.Title) === titleSlug
             );
 
             if (!doc) {
@@ -54,7 +50,6 @@
               return;
             }
 
-            // Show document info
             container.innerHTML = `
               <h1>${doc.Title}</h1>
               <p>

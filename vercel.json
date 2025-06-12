@@ -1,14 +1,12 @@
 {
-  "redirects": [
+  "rewrites": [
     {
       "source": "/pdf.html",
-      "destination": "/pdf",
-      "permanent": true
+      "destination": "/pdf"
     },
     {
       "source": "/search.html",
-      "destination": "/search",
-      "permanent": true
+      "destination": "/search"
     }
   ]
 }

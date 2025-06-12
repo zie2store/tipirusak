@@ -137,7 +137,7 @@ if (document.getElementById('title-section')) {
         const suggestions = shuffled.map(d => {
           const slug = slugify(d.Title);
           const baseUrl = window.location.origin;
-          const url = `${baseUrl}/pdf?document=${d.ID}#${slug}`;
+          const url = `${baseUrl}/pdf.html?document=${d.ID}#${slug}`;
           return `
             <div class="related-post">
               <div class="related-post-title">
@@ -171,7 +171,7 @@ if (document.getElementById('results') && !document.getElementById('header')) {
       const suggestions = shuffled.map(d => {
         const slug = slugify(d.Title);
         const baseUrl = window.location.origin;
-        const url = `${baseUrl}/pdf?document=${d.ID}#${slug}`;
+        const url = `${baseUrl}/pdf.html?document=${d.ID}#${slug}`;
         return `
           <div class="related-post">
             <div class="related-post-title">
@@ -217,7 +217,7 @@ if (document.getElementById('header') && document.getElementById('results')) {
           headerEl.textContent = `${matches.length} document${matches.length !== 1 ? 's' : ''} found for '${queryParam.replace(/-/g, ' ')}'.`;
           const output = matches.map(d => {
             const slug = slugify(d.Title);
-            const url = `${baseUrl}/pdf?document=${d.ID}#${slug}`;
+            const url = `${baseUrl}/pdf.html?document=${d.ID}#${slug}`;
             const highlightedTitle = highlight(d.Title, queryWords);
             const highlightedSummary = highlight(d.Summary, queryWords);
             return `

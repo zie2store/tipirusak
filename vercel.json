@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/pdf.html",
+      "destination": "/pdf",
+      "permanent": true
+    },
+    {
+      "source": "/search.html",
+      "destination": "/search",
+      "permanent": true
+    }
+  ]
+}

@@ -5,6 +5,17 @@ const CSV_URLS = [
   'https://raw.githubusercontent.com/kuenastar115/scbd/refs/heads/main/scbd3.csv'
 ];
 
+// Auto-redirect /pdf.html → /pdf and /search.html → /search (with query and hash preserved)
+const path = window.location.pathname;
+
+if (path.endsWith('/pdf.html') || path.endsWith('/search.html')) {
+  const query = window.location.search || '';
+  const hash = window.location.hash || '';
+  const target = path.replace('.html', '') + query + hash;
+  window.location.replace(target);
+}
+
+
 function slugify(title) {
   return title.trim()
               .toLowerCase()
@@ -137,7 +148,7 @@ if (document.getElementById('title-section')) {
         const suggestions = shuffled.map(d => {
           const slug = slugify(d.Title);
           const baseUrl = window.location.origin;
-          const url = `${baseUrl}/pdf?document=${d.ID}#${slug}`;
+          const url = `${baseUrl}/pdf.html?document=${d.ID}#${slug}`;
           return `
             <div class="related-post">
               <div class="related-post-title">
@@ -171,7 +182,7 @@ if (document.getElementById('results') && !document.getElementById('header')) {
       const suggestions = shuffled.map(d => {
         const slug = slugify(d.Title);
         const baseUrl = window.location.origin;
-        const url = `${baseUrl}/pdf?document=${d.ID}#${slug}`;
+        const url = `${baseUrl}/pdf.html?document=${d.ID}#${slug}`;
         return `
           <div class="related-post">
             <div class="related-post-title">
@@ -217,7 +228,7 @@ if (document.getElementById('header') && document.getElementById('results')) {
           headerEl.textContent = `${matches.length} document${matches.length !== 1 ? 's' : ''} found for '${queryParam.replace(/-/g, ' ')}'.`;
           const output = matches.map(d => {
             const slug = slugify(d.Title);
-            const url = `${baseUrl}/pdf?document=${d.ID}#${slug}`;
+            const url = `${baseUrl}/pdf.html?document=${d.ID}#${slug}`;
             const highlightedTitle = highlight(d.Title, queryWords);
             const highlightedSummary = highlight(d.Summary, queryWords);
             return `

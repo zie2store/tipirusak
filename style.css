@@ -8,6 +8,7 @@ html, body {
   flex-direction: column;
   background-color: #f1f5f9;
   color: #333;
+  overflow-x: hidden;
 }
 
 /* Header */
